@@ -1,0 +1,58 @@
+{
+ "w": 1000,
+ "h": 600,
+ "shapes": [
+  {
+   "key": "industrial",
+   "type": "rect",
+   "x": 121.0,
+   "y": 86.7,
+   "w": 489.3,
+   "h": 373.2
+  },
+  {
+   "key": "tradesecret",
+   "type": "ellipse",
+   "cx": 631.6,
+   "cy": 252.6,
+   "rx": 343.9,
+   "ry": 227.7
+  },
+  {
+   "key": "nct",
+   "type": "ellipse",
+   "cx": 330.5,
+   "cy": 220.9,
+   "rx": 112.7,
+   "ry": 82.5,
+   "minr": 100
+  },
+  {
+   "key": "nsttech",
+   "type": "ellipse",
+   "cx": 346.8,
+   "cy": 234.6,
+   "rx": 65.0,
+   "ry": 39.2,
+   "minr": 62
+  },
+  {
+   "key": "sme",
+   "type": "ellipse",
+   "cx": 592.8,
+   "cy": 436.7,
+   "rx": 160.3,
+   "ry": 141.2,
+   "minr": 120
+  },
+  {
+   "key": "techdata",
+   "type": "ellipse",
+   "cx": 657.6,
+   "cy": 439.9,
+   "rx": 103.9,
+   "ry": 69.7,
+   "minr": 85
+  }
+ ]
+}

@@ -1,0 +1,141 @@
+{
+ "snapshot": "2026-10-20",
+ "laws": {
+  "itp": {
+   "promulgated": "2025-12-02",
+   "effective": "2026-06-03"
+  },
+  "nst": {
+   "promulgated": "2026-06-02",
+   "effective": "2026-06-02"
+  },
+  "dtp": {
+   "promulgated": "2026-06-09",
+   "effective": "2026-12-10"
+  },
+  "ucp": {
+   "promulgated": "2026-09-15",
+   "effective": "2027-03-16"
+  },
+  "smt": {
+   "promulgated": "2026-09-29",
+   "effective": "2027-03-30"
+  },
+  "wcp": {
+   "promulgated": "2026-09-29",
+   "effective": "2026-09-29"
+  },
+  "sub": {
+   "promulgated": "2026-09-08",
+   "effective": "2027-09-09"
+  },
+  "fta": {
+   "promulgated": "2026-04-21",
+   "effective": "2026-10-22"
+  },
+  "fdi": {
+   "promulgated": "2025-10-01",
+   "effective": "2025-10-01"
+  },
+  "rnd": {
+   "promulgated": "2026-09-15",
+   "effective": "2027-03-16"
+  },
+  "iti": {
+   "promulgated": "2026-06-02",
+   "effective": "2026-06-02"
+  },
+  "ttc": {
+   "promulgated": "2026-05-26",
+   "effective": "2026-11-27"
+  },
+  "semi": {
+   "promulgated": "2026-06-02",
+   "effective": "2026-08-11"
+  },
+  "inv": {
+   "promulgated": "2025-10-01",
+   "effective": "2025-10-01"
+  },
+  "pat": {
+   "promulgated": "2026-09-15",
+   "effective": "2027-03-16"
+  },
+  "dap": {
+   "promulgated": "2026-08-11",
+   "effective": "2026-11-12"
+  },
+  "nis": {
+   "promulgated": "2026-09-29",
+   "effective": "2026-12-30"
+  }
+ },
+ "pending": [
+  "dap",
+  "dtp",
+  "fta",
+  "nis",
+  "pat",
+  "rnd",
+  "smt",
+  "sub",
+  "ttc",
+  "ucp"
+ ],
+ "edges": 2572,
+ "cross": 140,
+ "pairs": {
+  "itp>iti": 1,
+  "itp>nst": 1,
+  "itp>fta": 2,
+  "itp>dap": 2,
+  "itp>ucp": 1,
+  "nst>itp": 8,
+  "nst>ucp": 1,
+  "nst>fta": 2,
+  "nst>dap": 2,
+  "nst>iti": 2,
+  "nst>rnd": 3,
+  "nst>wcp": 1,
+  "dtp>dap": 3,
+  "dtp>fta": 2,
+  "ucp>ttc": 1,
+  "ucp>inv": 1,
+  "ucp>pat": 1,
+  "ucp>sub": 1,
+  "smt>itp": 1,
+  "smt>sub": 1,
+  "smt>ucp": 2,
+  "smt>inv": 1,
+  "smt>wcp": 1,
+  "smt>ttc": 5,
+  "wcp>ttc": 2,
+  "wcp>sub": 44,
+  "wcp>ucp": 1,
+  "wcp>inv": 1,
+  "wcp>pat": 1,
+  "sub>wcp": 1,
+  "fta>dap": 2,
+  "fdi>fta": 2,
+  "rnd>pat": 4,
+  "iti>fdi": 1,
+  "ttc>pat": 1,
+  "ttc>iti": 1,
+  "semi>nst": 2,
+  "semi>iti": 3,
+  "semi>ttc": 1,
+  "semi>fdi": 2,
+  "semi>itp": 1,
+  "inv>pat": 2,
+  "inv>ucp": 2,
+  "inv>ttc": 3,
+  "inv>iti": 3,
+  "pat>inv": 4,
+  "pat>ucp": 1,
+  "dap>dtp": 4,
+  "dap>rnd": 1,
+  "dap>ucp": 1,
+  "dap>fta": 2,
+  "dap>fdi": 1
+ }
+}

@@ -1,0 +1,50 @@
+{
+ "w": 1000,
+ "h": 560,
+ "shapes": [
+  {
+   "key": "tradesecret",
+   "type": "ellipse",
+   "cx": 378.5,
+   "cy": 314.1,
+   "rx": 312.5,
+   "ry": 226.2
+  },
+  {
+   "key": "strategic",
+   "type": "ellipse",
+   "cx": 688.8,
+   "cy": 295.4,
+   "rx": 186.2,
+   "ry": 147.0,
+   "minr": 150
+  },
+  {
+   "key": "nct",
+   "type": "ellipse",
+   "cx": 526.1,
+   "cy": 162.0,
+   "rx": 130.7,
+   "ry": 102.4,
+   "minr": 100
+  },
+  {
+   "key": "nsttech",
+   "type": "ellipse",
+   "cx": 531.4,
+   "cy": 170.7,
+   "rx": 67.8,
+   "ry": 58.6,
+   "minr": 62
+  },
+  {
+   "key": "defense",
+   "type": "ellipse",
+   "cx": 665.9,
+   "cy": 397.8,
+   "rx": 158.2,
+   "ry": 105.2,
+   "minr": 95
+  }
+ ]
+}
