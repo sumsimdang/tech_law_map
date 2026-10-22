@@ -72,8 +72,8 @@ button{cursor:pointer}
 
 /* ── 작업대 ── */
 .work{display:grid;grid-template-columns:minmax(220px,264px) minmax(0,1fr) minmax(320px,410px);gap:12px;min-height:0}
-.work[data-view="topics"],.work[data-view="matrix"]{grid-template-columns:minmax(0,1fr) minmax(320px,430px)}
-.work[data-view="topics"] .pane.index,.work[data-view="matrix"] .pane.index{display:none}
+.work[data-view="topics"],.work[data-view="leak"],.work[data-view="matrix"]{grid-template-columns:minmax(0,1fr) minmax(320px,430px)}
+.work[data-view="topics"] .pane.index,.work[data-view="leak"] .pane.index,.work[data-view="matrix"] .pane.index{display:none}
 .pane{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r);min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden}
 
 /* 색인 */
@@ -239,6 +239,42 @@ table.pairs{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-nu
 /* 개념·유출 */
 .topicwrap{flex:1;min-height:0;overflow:auto;padding:14px 18px 28px}
 .tnav{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px}
+.modeseg{margin-right:4px}
+.tl-bars{display:grid;gap:10px;margin:6px 0 4px}
+.tl-bar .lb{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;margin-bottom:4px}
+.tl-bar .lb b{font-weight:600}
+.tl-bar .lb span{color:var(--ink-3);font-family:var(--f-mono);font-size:11.5px}
+.tl-track{display:flex;height:22px;border-radius:4px;overflow:hidden;background:var(--sunk);font-size:11px;font-family:var(--f-mono)}
+.tl-track i{display:flex;align-items:center;justify-content:center;font-style:normal;white-space:nowrap;overflow:hidden}
+.tl-track .both{background:var(--accent);color:var(--accent-ink)}
+.tl-track .kc{background:var(--g-core);color:#fff;opacity:.82}
+.tl-track .st{background:var(--mark);color:var(--mark-ink)}
+.tl-key{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11.5px;color:var(--ink-2);margin-top:6px}
+.tl-key span{display:inline-flex;align-items:center;gap:5px}
+.tl-key i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.tpairs{display:grid;gap:10px}
+.tfield{font-size:12px;font-weight:600;color:var(--ink-3);letter-spacing:.04em;margin:14px 0 2px}
+.tpair{border:1px solid var(--rule);border-radius:var(--r);background:var(--surface);padding:10px 12px}
+.tpair .hd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:8px}
+.tpair .hd b{font-size:13.5px}
+.tpair .cols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tpair .col{font-size:12.5px;line-height:1.6;color:var(--ink-2);background:var(--paper);border-radius:4px;padding:7px 9px}
+.tpair .col .w{display:block;font-size:11px;font-weight:600;color:var(--ink-3);margin-bottom:2px}
+.tpair .col mark{background:var(--mark-soft);color:var(--ink);box-shadow:inset 0 -2px 0 var(--mark);padding:0 1px;border-radius:2px}
+.tpair .nt2{font-size:12px;color:var(--ink);margin-top:7px}
+.rel{font-size:10.5px;font-weight:600;border-radius:3px;padding:1px 6px}
+.rel.narrower{color:var(--accent);background:var(--accent-soft)}
+.rel.same{color:var(--ink-2);background:var(--sunk)}
+.rel.different{color:var(--interp);background:var(--interp-soft)}
+.rel.only{color:var(--mark-ink);background:var(--mark-soft)}
+.tlist{margin:0;padding:0 0 0 20px;font-size:12.5px;line-height:1.65;color:var(--ink-2)}
+.tlist li{margin:3px 0}
+details.tf{border-top:1px solid var(--rule);padding:6px 0}
+details.tf summary{cursor:pointer;font-size:13px;font-weight:600;list-style-position:inside}
+details.tf summary span{font-weight:400;color:var(--ink-3);font-size:12px;margin-left:6px}
+.ntc{display:inline-block;font-size:11px;color:var(--ink-3);border:1px solid var(--rule-2);border-radius:3px;padding:0 5px;margin-left:4px;text-decoration:none}
+.ntc:hover{color:var(--accent);border-color:var(--accent)}
+@media (max-width:640px){ .tpair .cols{grid-template-columns:1fr} }
 .tnav button{border:1px solid var(--rule-2);background:var(--surface);border-radius:999px;padding:4px 11px;font-size:12.5px;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px}
 .tnav button i{width:8px;height:8px;border-radius:50%;display:inline-block}
 .tnav button:hover{border-color:var(--ink-3);color:var(--ink)}
@@ -457,7 +493,7 @@ table.relm{border-collapse:separate;border-spacing:3px;font-size:12px}
 /* 반응형 */
 @media (max-width:1180px){
   .work{grid-template-columns:minmax(200px,230px) minmax(0,1fr) minmax(300px,350px)}
-  .work[data-view="topics"],.work[data-view="matrix"]{grid-template-columns:minmax(0,1fr) minmax(300px,360px)}
+  .work[data-view="topics"],.work[data-view="leak"],.work[data-view="matrix"]{grid-template-columns:minmax(0,1fr) minmax(300px,360px)}
 }
 @media (max-width:900px){
   .app{grid-template-rows:auto auto minmax(0,1fr)}
@@ -471,7 +507,7 @@ table.relm{border-collapse:separate;border-spacing:3px;font-size:12px}
   .paneswitch button{flex:1;border:none;background:var(--surface);padding:7px 0;font-size:13px;color:var(--ink-2);font-weight:500}
   .paneswitch button+button{border-left:1px solid var(--rule)}
   .paneswitch button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
-  .work,.work[data-view="topics"],.work[data-view="matrix"]{grid-template-columns:minmax(0,1fr)}
+  .work,.work[data-view="topics"],.work[data-view="leak"],.work[data-view="matrix"]{grid-template-columns:minmax(0,1fr)}
   .work .pane{display:none}
   .work[data-pane="index"] .pane.index,.work[data-pane="stage"] .pane.stage,.work[data-pane="reader"] .pane.reader{display:flex}
   .legend{font-size:11px;left:8px;bottom:8px;gap:2px 9px;padding:5px 7px}
@@ -491,10 +527,9 @@ table.relm{border-collapse:separate;border-spacing:3px;font-size:12px}
     </div>
     <div class="views" role="tablist" aria-label="보기 방식">
       <button role="tab" id="v-laws" data-view="laws" aria-selected="true">법률 관계</button>
-      <button role="tab" id="v-topics" data-view="topics" aria-selected="false">개념·유출</button>
-      <button role="tab" id="v-orbit" data-view="orbit" aria-selected="false">조문 인용망</button>
-      <button role="tab" id="v-all" data-view="all" aria-selected="false">전체 조문</button>
-      <button role="tab" id="v-matrix" data-view="matrix" aria-selected="false">인용 행렬</button>
+      <button role="tab" id="v-orbit" data-view="orbit" aria-selected="false">조문 인용</button>
+      <button role="tab" id="v-topics" data-view="topics" aria-selected="false">기술 개념</button>
+      <button role="tab" id="v-leak" data-view="leak" aria-selected="false">유출 처벌</button>
     </div>
     <button class="about-btn" id="aboutBtn" type="button">자료 안내</button>
   </header>
@@ -542,6 +577,13 @@ table.relm{border-collapse:separate;border-spacing:3px;font-size:12px}
     <button class="x" type="button" id="aboutClose">닫기</button>
     <h2 id="aboutTitle">자료 안내</h2>
     <p>기술보호와 관련된 17개 법률과 그 시행령의 조문이 서로 어떤 조문을 인용하는지 보여 줍니다. 한 조문을 고치면 어떤 조문을 함께 살펴봐야 하는지 짚어 보는 데 쓸 수 있습니다.</p>
+    <h3>네 가지 보기</h3>
+    <ul>
+      <li><b>법률 관계</b>: 법률끼리 주고받은 인용을 지도나 행렬로 봐요.</li>
+      <li><b>조문 인용</b>: 한 조문을 가운데 두고 인용하는 조문과 인용받는 조문을 보거나(인용망), 모든 조문을 한 번에 봐요(전체 조문).</li>
+      <li><b>기술 개념</b>: 국가핵심기술, 영업비밀 같은 보호 대상의 정의와 포함 관계, 시행령 세부 사항, 고시에 지정된 기술 목록을 봐요.</li>
+      <li><b>유출 처벌</b>: 법률마다 유출로 보는 행위와 형량을 비교해요.</li>
+    </ul>
     <h3>자료 출처와 기준일</h3>
     <p>국가법령정보센터 원문을 Markdown으로 보관하는 공개 저장소 <a href="https://github.com/legalize-kr/legalize-kr" target="_blank" rel="noopener">legalize-kr</a>의 <span id="snap"></span> 판을 썼습니다. 법률과 시행령 본문을 다루며, 시행규칙과 부칙은 넣지 않았습니다. 법령 원문은 공공저작물입니다.</p>
     <div class="tblwrap"><table class="srclist" id="srclist"></table></div>
@@ -557,20 +599,21 @@ table.relm{border-collapse:separate;border-spacing:3px;font-size:12px}
     <p>시행령이 있는 법률은 시행령 조문을 함께 넣었어요. 국가정보원법은 원문 저장소에 시행령이 없어요. 시행령 본문의 <code>법 제N조</code>는 모법 조문으로, <code>이 영</code>과 법률명 없는 <code>제N조</code>는 같은 시행령 조문으로, <code>「○○법 시행령」</code>과 <code>같은 법 시행령</code>은 그 법률의 시행령으로 봅니다.</p>
     <ul>
       <li>시행령 조문이 모법 조문을 가리키는 연결은 '위임 연결'로 따로 모았어요. 법률 조문을 열면 그 조문을 구체화한 시행령 조문이, 시행령 조문을 열면 근거가 되는 법률 조문이 함께 나와요.</li>
-      <li>시행령에서 다른 법률을 인용한 곳은 법률 관계 지도, 전체 조문, 인용 행렬에서 '시행령 인용 포함'으로 켜고 끌 수 있어요.</li>
+      <li>시행령에서 다른 법률을 인용한 곳은 법률 관계(지도·행렬)와 조문 인용의 전체 조문 보기에서 '시행령 인용 포함'으로 켜고 끌 수 있어요.</li>
       <li>이 지도에 없는 법령의 시행령과 시행규칙을 인용한 곳은 표시하지 않아요.</li>
     </ul>
     <h3>주간 자동 점검</h3>
-    <p>매주 한 번 저장소의 최신 법령으로 지도를 다시 만들어 같은 링크에 게시해요. 개념·유출 비교에 쓴 조문 문구가 개정으로 바뀌면 자동 게시를 멈추고, 사람이 확인한 뒤 반영해요. 내려받은 HTML 파일은 받은 시점의 복사본이라 바뀌지 않아요.</p>
+    <p>매주 한 번 저장소의 최신 법령으로 지도를 다시 만들어 같은 링크에 게시해요. 기술 개념·유출 처벌 비교에 쓴 조문 문구가 개정으로 바뀌면 자동 게시를 멈추고, 사람이 확인한 뒤 반영해요. 내려받은 HTML 파일은 받은 시점의 복사본이라 바뀌지 않아요.</p>
     <ul class="clog" id="clog"></ul>
     <h3>판본과 시행일</h3>
     <p>지도 본문은 가장 최근에 공포된 판본이에요. 아직 시행 전인 개정이 있는 조문은 목록에 점으로 표시하고, 열람대에서 현행 문구와 개정 문구를 바꿔 볼 수 있어요. 현행 문구는 같은 저장소의 개정 이력에서 오늘 시행 중인 판본을 찾아 가져왔어요. 부칙으로 일부 조문만 먼저 시행하는 경우는 반영하지 못했어요.</p>
-    <h3>개념·유출 비교</h3>
+    <h3>기술 개념·유출 처벌</h3>
     <p>정의, 금지행위, 형량은 모두 근거 조문의 원문 구절과 함께 실었고, 빌드할 때 그 구절이 실제 조문에 있는지 하나씩 대조했어요. 형량 비교는 오늘 시행 중인 문구를 기준으로 하고, 시행 예정 개정은 따로 표시했어요. '조문 해석'으로 표시한 관계는 조문 문언에서 끌어낸 정리이니 실무에서는 판례와 유권해석을 함께 확인하세요.</p>
+    <p>'지정 기술 목록'의 고시 문구(국가핵심기술 지정 고시, 국가첨단전략기술 지정 고시)는 법제처 국가법령정보 공동활용 서비스의 현행 행정규칙 원문에서 옮겼어요. 고시는 법령 저장소에 없어서 주간 자동 점검으로 대조하지 못해요. 화면에 고시 번호와 시행일을 적어 두었어요.</p>
     <h3>읽을 때 주의할 점</h3>
     <ul>
       <li>인용이 있다고 함께 개정해야 하는 것은 아니고, 인용이 없다고 영향이 없다고 단정할 수도 없습니다.</li>
-      <li>"대통령령으로 정한다" 같은 위임 관계와 시행령을 거친 간접 연결은 나타나지 않습니다.</li>
+      <li>법률이 "대통령령으로 정한다"고만 쓰고 시행령이 그 법 조문 번호를 적지 않은 위임은 위임 연결로 나타나지 않습니다.</li>
       <li>법률 분류(기술보호 핵심, 거래·상생 등)는 이 지도에서 편의상 나눈 것입니다.</li>
       <li>자동 추출 결과이므로 실무에 쓰기 전에 국가법령정보센터 원문을 확인하세요.</li>
     </ul>
@@ -704,11 +747,11 @@ const S = {
   openLaw: 'ucp',
   showExt: false, showIntraAll: false, orbitIntra: true, hops: 1,
   crossOnly: false, linkTab: 'out', pairSel: null,
-  withDec: true, openDoc: 'law',
+  withDec: true, openDoc: 'law', lawsMode: 'laws', artMode: 'orbit',
   hist: [],
 };
 try { const saved = JSON.parse(localStorage.getItem('tpmap.v1')||'{}');
-  if (saved.view && ['laws','topics','orbit','all','matrix'].includes(saved.view)) S.view = saved.view;
+  if (saved.view && ['laws','topics','leak','orbit','all','matrix'].includes(saved.view)) S.view = saved.view;
   ['showExt','showIntraAll','orbitIntra','crossOnly','withDec'].forEach(k=>{ if (typeof saved[k]==='boolean') S[k]=saved[k]; });
   if (saved.hops===1||saved.hops===2) S.hops = saved.hops;
   if (saved.centerLaw && L[saved.centerLaw]) { S.centerLaw = saved.centerLaw; S.sel = {type:'law', id:saved.centerLaw}; S.openLaw = saved.centerLaw; }
@@ -718,13 +761,16 @@ function persist(){ try{ localStorage.setItem('tpmap.v1', JSON.stringify({view:S
   try {
     const h = decodeURIComponent((location.hash||'').slice(1));
     const tm = h.match(/^topic-([a-z]+)$/);
-    if (tm) { S.view = 'topics'; S.topic = tm[1]; return; }
+    if (tm) { S.topic = tm[1]; S.view = tm[1]==='leak' ? 'leak' : 'topics'; return; }
     const m = h.match(/^([a-z_]+)-(\d+(?:-\d+)?)$/);
     if (m && ART.has(m[1]+':'+m[2])) { S.sel = {type:'article', id: m[1]+':'+m[2]}; S.openLaw = fam(m[1]); S.openDoc = isDec(m[1]) ? 'dec' : 'law'; S.view = 'orbit'; }
     else if (/^[a-z_]+$/.test(h) && L[h]) { S.sel = {type:'law', id:h}; S.openLaw = fam(h); S.openDoc = isDec(h) ? 'dec' : 'law'; }
   } catch(e){}
 })();
 
+S.lawsMode = S.view==='matrix' ? 'matrix' : 'laws';
+S.artMode = S.view==='all' ? 'all' : 'orbit';
+const TAB_OF = {laws:'laws', matrix:'laws', orbit:'orbit', all:'orbit', topics:'topics', leak:'leak'};
 rebuildPairs();
 const $ = s => document.querySelector(s);
 const work = $('#work');
@@ -807,11 +853,19 @@ function renderResults(q){
   let h = '<div class="results">';
   const tops = topicMatches(q);
   if (tops.length) {
-    h += `<div class="grp">개념·유출</div>`;
+    h += `<div class="grp">기술 개념·유출 처벌</div>`;
     for (const k of tops) {
       if (k==='leak') h += `<button class="topicrow" type="button" data-topicopen="leak"><b>유출 처벌 비교</b><span>${TP.leak.length}개 법률의 유출 정의와 형량</span></button>`;
+      else if (k==='techlist') h += `<button class="topicrow" type="button" data-topicopen="techlist"><b>지정 기술 목록</b><span>국가핵심기술 ${TP.techlist.notices.kc.total}개 · 국가첨단전략기술 ${TP.techlist.notices.st.total}개 비교</span></button>`;
       else { const c = CONCEPT[k]; h += `<button class="topicrow" type="button" data-topicopen="${k}"><b><i style="background:var(--g-${CONCEPT_COLOR[k]})"></i>${esc(c.name)}</b><span>${esc(L[c.law].short)} · 정의, 포함 관계, 유출 처벌</span></button>`; }
     }
+  }
+  const techHits = [];
+  if (!numM && nq.length >= 2) for (const side of ['kc','st']) for (const g of TP.techlist[side]) g.items.forEach((t, i)=>{ if (t.replace(/\s+/g,'').includes(nq) || g.f.replace(/[·\s]/g,'').includes(nq)) techHits.push({side, f:g.f, t}); });
+  if (techHits.length) {
+    h += `<div class="grp">지정 기술 ${techHits.length}개</div>`;
+    for (const x of techHits.slice(0, 8)) h += `<button class="topicrow" type="button" data-topicopen="techlist"><b>${x.side==='kc'?'국가핵심기술':'국가첨단전략기술'} · ${esc(x.f)}</b><span>${esc(x.t)}</span></button>`;
+    if (techHits.length > 8) h += `<button class="topicrow" type="button" data-topicopen="techlist"><b>지정 기술 목록에서 모두 보기</b><span>${techHits.length-8}개 더</span></button>`;
   }
   if (lawHits.length) {
     h += `<div class="grp">법률</div>`;
@@ -859,6 +913,7 @@ function topicMatches(q){
   if (leak && !full.length) out.push('leak');
   out.push(...full);
   if (leak && full.length) out.push('leak');
+  if (['기술목록','지정기술','고시','목록'].some(a=>nq.includes(a))) out.push('techlist');
   return out;
 }
 
@@ -1790,26 +1845,32 @@ $('#matrixwrap').addEventListener('click', e=>{
 
 /* ───────── 보기 전환 ───────── */
 const toolbar = $('#toolbar'), legend = $('#legend');
+function modeSeg(){
+  const opts = (S.view==='laws' || S.view==='matrix') ? [['laws','지도'],['matrix','행렬']] : [['orbit','인용망'],['all','전체 조문']];
+  return `<span class="seg modeseg" role="group" aria-label="보는 방식">${opts.map(([v,l])=>`<button type="button" data-mode="${v}" aria-pressed="${S.view===v}">${l}</button>`).join('')}</span>`;
+}
 function renderToolbar(){
   let h = '';
   if (S.view==='laws') {
-    h = `<span class="lead">법률을 누르면 개요가, 선을 누르면 인용 목록이 나와요.</span>
+    h = modeSeg() + `<span class="lead">법률을 누르면 개요가, 선을 누르면 인용 목록이 나와요.</span>
          <label class="chk" for="t-center">가운데 법률 <select id="t-center" class="sel">${LAWS.map(l=>`<option value="${l.key}" ${l.key===S.centerLaw?'selected':''}>${esc(l.short)}</option>`).join('')}</select></label>
          <label class="chk"><input type="checkbox" id="t-ext" ${S.showExt?'checked':''}>지도 밖 법령 함께 보기</label>
          ${DECS.length ? `<label class="chk"><input type="checkbox" id="t-dec" ${S.withDec?'checked':''}>시행령 인용 포함</label>` : ''}`;
   } else if (S.view==='orbit') {
     const a = S.sel.type==='article' ? ART.get(S.sel.id) : null;
-    h = `<span class="lead">${a ? `중심 <b>${esc(L[a.law].short)} ${artLabel(a.k)}</b> ${esc(a.t)}` : '목록이나 지도에서 조문을 고르면 그 조문을 중심으로 그려요.'}${G&&G.truncated?' · 연결이 많아 일부만 표시':''}</span>
+    h = modeSeg() + `<span class="lead">${a ? `중심 <b>${esc(L[a.law].short)} ${artLabel(a.k)}</b> ${esc(a.t)}` : '목록이나 지도에서 조문을 고르면 그 조문을 중심으로 그려요.'}${G&&G.truncated?' · 연결이 많아 일부만 표시':''}</span>
          <span class="seg" role="group" aria-label="몇 단계까지"><button type="button" data-hops="1" aria-pressed="${S.hops===1}">1단계</button><button type="button" data-hops="2" aria-pressed="${S.hops===2}">2단계</button></span>
          <label class="chk"><input type="checkbox" id="t-oi" ${S.orbitIntra?'checked':''}>같은 법률 안 인용 포함</label>`;
   } else if (S.view==='all') {
-    h = `<span class="lead">${fmt(G ? G.nodes.filter(n=>n.kind==='art').length : totalArts)}개 조문을 법률별로 모았어요. 확대하면 조문 번호가 보여요.</span>
+    h = modeSeg() + `<span class="lead">${fmt(G ? G.nodes.filter(n=>n.kind==='art').length : totalArts)}개 조문을 법률별로 모았어요. 확대하면 조문 번호가 보여요.</span>
          <label class="chk"><input type="checkbox" id="t-ia" ${S.showIntraAll?'checked':''}>법률 안 인용 선 보기</label>
          ${DECS.length ? `<label class="chk"><input type="checkbox" id="t-dec" ${S.withDec?'checked':''}>시행령 조문 포함</label>` : ''}`;
   } else if (S.view==='topics') {
-    h = `<span class="lead">개념을 고르면 정의, 포함 관계, 유출 처벌이 나와요. 조문 번호를 누르면 원문이 열리고 근거 구절이 표시돼요.</span>`;
+    h = `<span class="lead">개념을 고르면 정의, 포함 관계, 시행령 세부 사항이 나와요. '지정 기술 목록'에서 국가핵심기술과 국가첨단전략기술을 비교해요.</span>`;
+  } else if (S.view==='leak') {
+    h = `<span class="lead">법률마다 유출로 보는 행위와 형량을 나란히 비교해요. 조문 번호나 행위 이름을 누르면 원문이 열려요.</span>`;
   } else {
-    h = `<span class="lead">법률 사이 인용 건수를 한눈에 비교해요.</span>${DECS.length ? `<label class="chk"><input type="checkbox" id="t-dec" ${S.withDec?'checked':''}>시행령 인용 포함</label>` : ''}`;
+    h = modeSeg() + `<span class="lead">법률 사이 인용 건수를 한눈에 비교해요.</span>${DECS.length ? `<label class="chk"><input type="checkbox" id="t-dec" ${S.withDec?'checked':''}>시행령 인용 포함</label>` : ''}`;
   }
   toolbar.innerHTML = h;
 }
@@ -1833,14 +1894,17 @@ toolbar.addEventListener('change', e=>{
   if (e.target.id==='t-oi') { S.orbitIntra = e.target.checked; persist(); setView('orbit', true); }
 });
 toolbar.addEventListener('click', e=>{
+  const md = e.target.closest('[data-mode]'); if (md) { if (md.dataset.mode!==S.view) setView(md.dataset.mode); return; }
   const b = e.target.closest('[data-hops]'); if (b) { S.hops = +b.dataset.hops; persist(); setView('orbit', true); }
 });
 
 function setView(v, rebuild){
   S.view = v; persist();
+  if (v==='laws' || v==='matrix') S.lawsMode = v;
+  if (v==='orbit' || v==='all') S.artMode = v;
   work.dataset.view = v;
-  document.querySelectorAll('.views [role=tab]').forEach(b=> b.setAttribute('aria-selected', String(b.dataset.view===v)));
-  if (v==='topics') {
+  document.querySelectorAll('.views [role=tab]').forEach(b=> b.setAttribute('aria-selected', String(b.dataset.view===TAB_OF[v])));
+  if (v==='topics' || v==='leak') {
     if (!(S.sel.type==='article' && S.sel.focus)) { S.sel = {type:'hint'}; renderReader(); }
   } else if (S.sel.type==='hint') {
     S.sel = {type:'law', id:S.centerLaw}; S.openLaw = S.centerLaw; renderReader(); renderIndex();
@@ -1848,7 +1912,8 @@ function setView(v, rebuild){
   if (!PANES[v].some(x=>x[0]===S.pane)) S.pane = 'stage';
   work.dataset.pane = S.pane;
   renderPaneSwitch();
-  const isMx = v==='matrix', isTp = v==='topics';
+  const isMx = v==='matrix', isTp = v==='topics' || v==='leak';
+  if (v==='leak') { if (S.topic!=='leak') S.topicPrev = S.topic; S.topic = 'leak'; } else if (v==='topics' && S.topic==='leak') S.topic = S.topicPrev || 'home';
   $('#matrixwrap').hidden = !isMx; $('#topicwrap').hidden = !isTp; wrap.hidden = isMx || isTp;
   hover = null; hoverLink = null; tip.hidden = true;
   if (G && G.sim) G.sim.stop();
@@ -1882,7 +1947,7 @@ function onSelectionChanged(){
   if (S.sel.type==='article') lastArticle = S.sel.id;
   if (S.view==='orbit') { if (S.sel.type==='article') setView('orbit'); else { renderToolbar(); } return; }
   if (S.view==='matrix') { renderMatrix(); return; }
-  if (S.view==='topics' || S.sel.type==='hint') return;
+  if (S.view==='topics' || S.view==='leak' || S.sel.type==='hint') return;
   if (G) { G.update(); draw(); if (S.view==='all' && S.sel.type==='article') centerOn(G.byId.get(S.sel.id)); }
 }
 function centerOn(n){
@@ -1892,7 +1957,13 @@ function centerOn(n){
   const sel = d3.select(canvas);
   if (reduceMotion) sel.call(zoom.transform, t); else sel.transition().duration(500).call(zoom.transform, t);
 }
-document.querySelector('.views').addEventListener('click', e=>{ const b = e.target.closest('[data-view]'); if (b) { setView(b.dataset.view); if (isNarrow()) setPane('stage'); } });
+document.querySelector('.views').addEventListener('click', e=>{
+  const b = e.target.closest('[data-view]'); if (!b) return;
+  const t = b.dataset.view;
+  setView(t==='laws' ? S.lawsMode : t==='orbit' ? S.artMode : t);
+  if (t==='leak' || t==='topics') { try { history.replaceState(null, '', '#topic-'+S.topic); } catch(e){} }
+  if (isNarrow()) setPane('stage');
+});
 
 /* ───────── 개념·유출 화면 ───────── */
 const topicwrap = $('#topicwrap');
@@ -2010,9 +2081,10 @@ function relMatrixHTML(sel){
   return h;
 }
 function openTopic(key){
-  S.topic = (key==='leak' || CONCEPT[key]) ? key : 'home';
+  S.topic = (key==='leak' || key==='techlist' || CONCEPT[key]) ? key : 'home';
   try { history.replaceState(null, '', '#topic-'+S.topic); } catch(e){}
-  if (S.view!=='topics') { setView('topics'); } else { renderToolbar(); renderTopics(); }
+  const want = S.topic==='leak' ? 'leak' : 'topics';
+  if (S.view!==want) { setView(want); } else { renderToolbar(); renderTopics(); }
   if (CONCEPT[S.topic]) {
     const d = CONCEPT[S.topic].def;
     select({type:'article', id: d.l+':'+d.a, focus: {q: d.q, v: d.v||null}}, {keepPane:true});
@@ -2022,13 +2094,13 @@ function openTopic(key){
 function renderTopics(){
   SRC_REG = [];
   const k = S.topic;
-  topicwrap.innerHTML = k==='leak' ? topicLeak() : CONCEPT[k] ? topicConcept(k) : topicHome();
+  topicwrap.innerHTML = k==='leak' ? topicLeak() : k==='techlist' ? topicTechlist() : CONCEPT[k] ? topicConcept(k) : topicHome();
   topicwrap.scrollTop = 0;
 }
 function topicNav(active){
-  return `<nav class="tnav" aria-label="개념과 유출">`
+  return `<nav class="tnav" aria-label="기술 개념">`
     + `<button type="button" data-topic="home" aria-pressed="${active==='home'}">한눈에</button>`
-    + `<button type="button" data-topic="leak" aria-pressed="${active==='leak'}">유출 처벌 비교</button>`
+    + `<button type="button" data-topic="techlist" aria-pressed="${active==='techlist'}">지정 기술 목록</button>`
     + `<span class="tsep" aria-hidden="true"></span>`
     + TP.concepts.map(c=>`<button type="button" data-topic="${c.key}" aria-pressed="${active===c.key}"><i style="background:var(--g-${CONCEPT_COLOR[c.key]})"></i>${esc(c.name)}</button>`).join('')
     + `</nav>`;
@@ -2065,8 +2137,7 @@ function topicHome(){
   h += `<h3 class="tsec">관계표</h3>` + relMatrixHTML(null) + `<div id="pairDetail" class="pdetail">${pairCardHTML(S.pairSel?S.pairSel[0]:'nsttech', S.pairSel?S.pairSel[1]:'tradesecret')}</div>`;
   h += `<h3 class="tsec">요건 비교</h3>` + compareTableHTML(null);
   h += `<h3 class="tsec">시행령이 정한 처리 기한</h3>` + procsHTML();
-  h += `<h3 class="tsec">유출 처벌에서 눈여겨볼 점</h3>` + insightsHTML();
-  h += `<div class="tcta"><button class="act primary" type="button" data-topic="leak">법률별 유출 처벌 비교표 보기</button></div>`;
+  h += `<h3 class="tsec">국가핵심기술과 국가첨단전략기술</h3><p class="body">두 고시에 지정된 기술을 분야별로 모으고, 같은 기술이 두 고시에서 어떤 기준(선폭, 적층 단수, 에너지밀도 등)으로 적혀 있는지 나란히 비교했어요.</p><div class="tcta"><button class="act primary" type="button" data-topic="techlist">지정 기술 목록 보기</button><button class="act" type="button" data-topic="leak">유출 처벌 비교 보기</button></div>`;
   return h;
 }
 function penLines(list, row, withLaw){
@@ -2120,7 +2191,7 @@ function leakTableHTML(){
   return h + `</tbody></table></div>`;
 }
 function topicLeak(){
-  let h = topicNav('leak');
+  let h = '';
   h += `<header class="thead"><p class="eyebrow">${esc(TP.asof)} 시행 중인 문구 기준 · 시행 예정 개정은 따로 표시</p><h2>유출하면 어떻게 처벌하나</h2><p class="lede">${TP.leak.length}개 법률이 정한 유출·침해행위와 처벌을 나란히 놓았어요. 조문 번호나 행위 이름을 누르면 원문이 열리고 근거 구절이 표시돼요.</p></header>`;
   h += `<h3 class="tsec">징역형 비교</h3>` + ladderHTML();
   h += `<h3 class="tsec">법률별 비교표</h3>` + leakTableHTML();
@@ -2137,12 +2208,65 @@ function leakCard(r){
   for (const n of r.notes) h += `<div class="nt"><span class="badge ${noteBadge(n.kind)}">${esc(n.kind)}</span> ${esc(n.t)} <span class="srcs">${srcBtns(n.src, true)}</span></div>`;
   return h + `</div>`;
 }
+const REL_LABEL = {narrower:'전략기술 기준이 더 좁음', same:'기준이 같음', different:'범위가 다름'};
+function tlItem(side, ref){ const [f, i] = ref.split('/'); const g = TP.techlist[side].find(x=>x.f===f); return g ? g.items[+i-1] : ''; }
+function tlMark(text, keys){
+  let h = esc(text);
+  for (const k of [...(keys||[])].sort((a,b)=>b.length-a.length)) { const e = esc(k); if (e) h = h.split(e).join('\u0000'+e+'\u0001'); }
+  return h.replace(/\u0000/g, '<mark>').replace(/\u0001/g, '</mark>');
+}
+function noticeLink(side){ const n = TP.techlist.notices[side]; return `<a class="ntc" href="${esc(n.url)}" target="_blank" rel="noopener" title="${esc(n.name)} ${esc(n.no)}">고시 ↗</a>`; }
+function topicTechlist(){
+  const T2 = TP.techlist, N = T2.notices;
+  const pairs = T2.pairs, stOnly = Object.keys(T2.stOnlyNote);
+  const kcUsed = new Set(pairs.map(p=>p.kc));
+  const nKc = N.kc.total, nSt = N.st.total, nBoth = pairs.length, nStOnly = stOnly.length, nKcOnly = nKc - nBoth;
+  let h = topicNav('techlist');
+  h += `<header class="thead"><p class="eyebrow">국가핵심기술 ${esc(N.kc.no)}(${esc(N.kc.effective)} 시행) · 국가첨단전략기술 ${esc(N.st.no)}(${esc(N.st.effective)} 시행)</p><h2>국가핵심기술과 국가첨단전략기술, 무엇이 지정돼 있나</h2><p class="lede">국가첨단전략기술은 지정되는 순간 국가핵심기술로도 봐요. 다만 두 고시는 같은 기술이라도 기준을 다르게 적어요. 전략기술 고시는 같은 기술이라도 대부분 선폭, 적층 단수, 에너지밀도 같은 기준을 더 높게 잡아 최첨단 부분만 골라요.</p></header>`;
+  const w = n => (n / nKc * 100).toFixed(2) + '%';
+  h += `<section class="tblock"><h3 class="tsec">한눈에</h3><div class="tl-bars">
+    <div class="tl-bar"><div class="lb"><b>국가핵심기술 고시</b><span>${T2.kc.length}개 분야 ${nKc}개</span></div><div class="tl-track"><i class="both" style="width:${w(nBoth)}">${nBoth}</i><i class="kc" style="width:${w(nKcOnly)}">${nKcOnly}</i></div></div>
+    <div class="tl-bar"><div class="lb"><b>국가첨단전략기술 고시</b><span>${T2.st.length}개 분야 ${nSt}개</span></div><div class="tl-track"><i class="both" style="width:${w(nBoth)}">${nBoth}</i><i class="st" style="width:${w(nStOnly)}">${nStOnly}</i></div></div>
+  </div><div class="tl-key"><span><i style="background:var(--accent)"></i>두 고시에 같은 기술 ${nBoth}개</span><span><i style="background:var(--g-core);opacity:.82"></i>국가핵심기술 고시에만 ${nKcOnly}개</span><span><i style="background:var(--mark)"></i>전략기술 고시에만 ${nStOnly}개 (국가핵심기술로 봄)</span></div>
+  <p class="note">그래서 국가핵심기술로 보호받는 기술은 고시 ${nKc}개에 전략기술 고시에만 있는 ${nStOnly}개를 더한 범위예요.</p></section>`;
+  h += `<section class="tblock"><h3 class="tsec">지정 기준 비교</h3><div class="tscroll"><table class="cmp"><thead><tr><th scope="col"></th><th scope="col">국가핵심기술</th><th scope="col">국가첨단전략기술</th></tr></thead><tbody>`;
+  for (const r of T2.criteriaRows) {
+    const cell = (c, side) => `${esc(c.t)}${c.notice ? noticeLink(c.notice) : ''}${(c.src||[]).length ? `<div class="srcs">${srcBtns(c.src, true)}</div>` : ''}`;
+    h += `<tr><th scope="row">${esc(r.k)}</th><td>${cell(r.kc,'kc')}</td><td>${cell(r.st,'st')}</td></tr>`;
+  }
+  h += `</tbody></table></div></section>`;
+  h += `<section class="tblock"><h3 class="tsec">같은 기술, 다른 기준 (${nBoth}개)</h3><p class="note">두 고시 문구를 나란히 놓고 기준이 다른 부분을 표시했어요. '더 좁음'은 전략기술 기준을 넘는 기술이 국가핵심기술 기준도 넘는다는 뜻으로, 두 문구를 대조한 이 지도의 정리예요.</p><div class="tpairs">`;
+  let lastF = null;
+  for (const p of pairs) {
+    const f = p.st.split('/')[0];
+    if (f !== lastF) { h += `<div class="tfield">${esc(f)}</div>`; lastF = f; }
+    h += `<div class="tpair"><div class="hd"><b>${esc(p.t)}</b><span class="rel ${p.rel}">${REL_LABEL[p.rel]}</span></div><div class="cols">
+      <div class="col"><span class="w">국가핵심기술 · ${esc(p.kc.split('/')[0])}</span>${tlMark(tlItem('kc', p.kc), p.kh)}</div>
+      <div class="col"><span class="w">국가첨단전략기술 · ${esc(f)}</span>${tlMark(tlItem('st', p.st), p.sh)}</div></div><p class="nt2">${esc(p.n)}</p></div>`;
+  }
+  h += `</div></section>`;
+  h += `<section class="tblock"><h3 class="tsec">전략기술 고시에만 있는 기술 (${nStOnly}개)</h3><p class="note">국가핵심기술 고시에는 없지만, 전략기술로 지정돼 국가핵심기술로도 봐요.</p><div class="tpairs">`;
+  for (const ref of stOnly) {
+    h += `<div class="tpair"><div class="hd"><b>${esc(ref.split('/')[0])}</b><span class="rel only">국가핵심기술로 간주</span></div><div class="col">${esc(tlItem('st', ref))}</div><p class="nt2">${esc(T2.stOnlyNote[ref])}</p></div>`;
+  }
+  h += `</div></section>`;
+  h += `<section class="tblock"><h3 class="tsec">국가핵심기술 고시에만 있는 기술 (${nKcOnly}개)</h3><p class="note">분야를 누르면 펼쳐져요. 전략기술과 겹치는 ${nBoth}개는 위 비교에 있어요.</p>`;
+  for (const g of T2.kc) {
+    const rest = g.items.map((t, i)=>({t, ref: g.f+'/'+(i+1)})).filter(x=>!kcUsed.has(x.ref));
+    if (!rest.length) continue;
+    h += `<details class="tf"><summary>${esc(g.f)}<span>${rest.length === g.items.length ? rest.length+'개' : g.items.length+'개 중 '+rest.length+'개'}</span></summary><ol class="tlist">${rest.map(x=>`<li>${esc(x.t)}</li>`).join('')}</ol></details>`;
+  }
+  h += `</section>`;
+  h += `<p class="note">고시 문구는 법제처 국가법령정보 공동활용 서비스의 현행 행정규칙 원문(${esc(N.kc.name)} ${esc(N.kc.no)}, ${esc(N.st.name)} ${esc(N.st.no)})에서 옮겼어요. 고시는 법령 저장소에 없어 주간 자동 점검에서 원문과 대조하지 않아요. 고시가 바뀌면 이 목록도 손으로 고쳐야 해요. ${noticeLink('kc')} ${noticeLink('st')}</p>`;
+  return h;
+}
 function topicConcept(k){
   const c = CONCEPT[k], l = L[c.law];
   let h = topicNav(k);
   h += `<header class="thead"><p class="eyebrow"><span class="kind k-${c.kind==='지정형'?'d':'r'}">${esc(c.kind)}</span>${esc(l.name)}</p><h2>${esc(c.name)}</h2><p class="lede">${esc(c.summary)}</p></header>`;
   h += `<section class="tblock"><h3 class="tsec">정의</h3><blockquote class="defq">${esc(c.def.q)}</blockquote><div class="srcs">${srcBtns([c.def], true)}</div></section>`;
   h += `<section class="tblock"><h3 class="tsec">핵심 요소</h3><dl class="elist">${c.elements.map(e=>`<dt>${esc(e.k)}</dt><dd>${esc(e.t)}<div class="srcs">${srcBtns(e.src, true)}</div></dd>`).join('')}</dl></section>`;
+  if (k==='nct' || k==='nsttech') h += `<div class="tcta"><button class="act primary" type="button" data-topic="techlist">고시에 지정된 기술 목록 보기</button></div>`;
   if (c.decree && c.decree.length) h += `<section class="tblock"><h3 class="tsec">시행령이 정한 세부 사항</h3><dl class="elist dec">${c.decree.map(e=>`<dt>${esc(e.k)}</dt><dd>${esc(e.t)}<div class="srcs">${srcBtns(e.src, true)}</div></dd>`).join('')}</dl></section>`;
   const others = TP.concepts.map(x=>x.key).filter(x=>x!==k).sort((x,y)=> (LRANK[levelOf(k,y)] - LRANK[levelOf(k,x)]) || (LRANK[levelOf(y,k)] - LRANK[levelOf(x,k)]));
   h += `<section class="tblock"><h3 class="tsec">다른 개념과의 포함 관계</h3>${diagramsFor(k)}<div class="pcards">${others.map(o=>pairCardHTML(k, o)).join('')}</div></section>`;
@@ -2179,9 +2303,10 @@ topicwrap.addEventListener('keydown', e=>{
 const PANES = {
   laws:   [['index','목록'], ['stage','지도'], ['reader', null]],
   orbit:  [['index','목록'], ['stage','인용망'], ['reader', null]],
-  all:    [['index','목록'], ['stage','지도'], ['reader', null]],
+  all:    [['index','목록'], ['stage','전체'], ['reader', null]],
   matrix: [['stage','행렬'], ['reader', null]],
-  topics: [['stage','개념·유출'], ['reader', '원문']],
+  topics: [['stage','기술 개념'], ['reader', '원문']],
+  leak:   [['stage','유출 처벌'], ['reader', '원문']],
 };
 function paneLabel(p){
   const e = (PANES[S.view]||PANES.laws).find(x=>x[0]===p);

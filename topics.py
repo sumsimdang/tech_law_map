@@ -703,6 +703,63 @@ PROCS = [
 ]
 
 
+# ───────────────────────── 지정 기술 목록 (고시) ─────────────────────────
+# 고시 문구는 techlist.json(법제처 API 원문). 법률·시행령 근거만 원문 대조 대상이다.
+TECHLIST = json.loads((Path(__file__).parent / "techlist.json").read_text(encoding="utf-8"))
+TECH_CRITERIA = [
+    {"k": "무엇을 위한 지정인가",
+     "kc": {"t": "해외로 유출되면 국가안보와 국민경제에 중대한 악영향을 줄 기술을 보호", "src": [S("itp", "2", "해외로 유출될 경우에 국가의 안전보장 및 국민경제의 발전에 중대한 악영향을 줄 우려가 있는 기술로서")]},
+     "st": {"t": "공급망·경제안보 영향과 수출·고용 효과가 크고 연관산업 파급이 현저한 기술을 육성하고 보호", "src": [S("nst", "2", "공급망 안정화 등 국가ㆍ경제 안보에 미치는 영향 및 수출ㆍ고용 등 국민경제적 효과가 크고")]}},
+    {"k": "법률이 정한 고려사항",
+     "kc": {"t": "국가안보·국민경제 파급효과, 관련 제품의 국내외 시장점유율, 연구동향·기술 확산과의 조화를 종합해 필요최소한으로 선정", "src": [S("itp", "9", "필요최소한의 범위 안에서 선정하여야 한다")]},
+     "st": {"t": "공급망·국가경제안보 영향, 성장잠재력·기술난이도, 다른 산업 파급효과, 산업적 중요성, 수출·고용 등 국민경제 영향을 종합 고려", "src": [S("nst", "11", "해당 기술이 산업 공급망 및 국가ㆍ경제 안보에 미치는 영향"), S("nst", "11", "해당 기술의 성장잠재력과 기술난이도"), S("nst", "11", "해당 기술이 가지는 산업적 중요성")]}},
+    {"k": "시행령·고시가 더한 기준",
+     "kc": {"t": "고시 제3조: 국방·치안 영향, 확보 난이도·산업 성장·대외경쟁력, 연관산업 파급효과, 수출·고용·지역경제 영향", "notice": "kc"},
+     "st": {"t": "시행령: 국내 기술 수준과 산업화 단계, 교역규모와 국제 시장 동향. 고시 제4조: 별표 기술에 특화돼 양산을 목적으로 개발하거나 양산에 쓰는 기술만", "src": [S("nst_d", "14", "해당 기술의 국내 수준과 산업화 단계"), S("nst_d", "14", "해당 기술의 교역규모 및 국제 시장 동향")], "notice": "st"}},
+    {"k": "지정 절차",
+     "kc": {"t": "산업통상부장관이 산업기술보호위원회 심의를 거쳐 지정하고 고시", "src": [S("itp", "9", "위원회의 심의를 거쳐 국가핵심기술로 지정할 수 있다")]},
+     "st": {"t": "산업통상부장관이 조정위원회 심의와 위원회 심의·의결을 거쳐 지정하고 고시", "src": [S("nst", "11", "조정위원회의 심의 및 위원회의 심의ㆍ의결을 거쳐 전략기술을 지정할 수 있다")]}},
+    {"k": "서로의 관계",
+     "kc": {"t": "전략기술로 지정되면 국가핵심기술로도 지정된 것으로 봐요. 그래서 국가핵심기술은 고시 79개에 전략기술 고시에만 있는 6개를 더한 범위예요.", "src": [S("nst", "11", "「산업기술의 유출방지 및 보호에 관한 법률」 제9조에 따라 국가핵심기술을 지정ㆍ변경 또는 해제한 것으로 본다")]},
+     "st": {"t": "19개 모두 국가핵심기술이기도 해요. 13개는 국가핵심기술 고시에도 같은 기술이 있고(8개는 국가핵심기술 기준이 더 넓고, 3개는 기준이 같고, 2개는 범위가 달라요), 6개는 전략기술 고시에만 있어요.", "src": []}},
+]
+
+
+def check_techlist(errors):
+    T = TECHLIST
+    for side in ("kc", "st"):
+        n = sum(len(g["items"]) for g in T[side])
+        if n != T["notices"][side]["total"]:
+            errors.append(f"[고시 {side}] 항목 수 {n} ≠ {T['notices'][side]['total']}")
+    def item(side, ref):
+        f, _, i = ref.partition("/")
+        g = next((g for g in T[side] if g["f"] == f), None)
+        if not g or not (1 <= int(i) <= len(g["items"])):
+            errors.append(f"[고시 {side}] {ref} 없음")
+            return ""
+        return g["items"][int(i) - 1]
+    used_st, used_kc = set(), set()
+    for pr in T["pairs"]:
+        kt, st = item("kc", pr["kc"]), item("st", pr["st"])
+        for h in pr["kh"]:
+            if h not in kt:
+                errors.append(f"[짝 {pr['t']}] 국가핵심기술 문구에 '{h}' 없음")
+        for h in pr["sh"]:
+            if h not in st:
+                errors.append(f"[짝 {pr['t']}] 전략기술 문구에 '{h}' 없음")
+        if pr["kc"] in used_kc or pr["st"] in used_st:
+            errors.append(f"[짝 {pr['t']}] 중복 짝")
+        used_kc.add(pr["kc"]); used_st.add(pr["st"])
+    for ref in T["stOnlyNote"]:
+        item("st", ref)
+        if ref in used_st:
+            errors.append(f"[전략기술 {ref}] 짝이 있는데 전략기술에만 있다고 표시")
+    all_st = {f'{g["f"]}/{i + 1}' for g in T["st"] for i in range(len(g["items"]))}
+    left = all_st - used_st - set(T["stOnlyNote"])
+    if left:
+        errors.append(f"[전략기술] 분류 안 된 항목: {sorted(left)}")
+
+
 def article_text(l, a, v):
     arts = {x["k"]: x for x in GRAPH["articles"][l]}
     if a not in arts:
@@ -764,11 +821,13 @@ for dg in DIAGRAMS:
     dg["shapes"] = json.loads((Path(__file__).parent / dg.pop("src")).read_text(encoding="utf-8"))["shapes"]
     for s in dg["shapes"]:
         s.pop("minr", None)
-data = {"asof": ASOF, "insights": INSIGHTS, "procs": PROCS, "concepts": CONCEPTS, "levels": LEVELS, "pairs": PAIRS, "refs": REFS,
+TECHLIST["criteriaRows"] = TECH_CRITERIA
+data = {"asof": ASOF, "insights": INSIGHTS, "procs": PROCS, "techlist": TECHLIST, "concepts": CONCEPTS, "levels": LEVELS, "pairs": PAIRS, "refs": REFS,
         "diagrams": DIAGRAMS, "leak": LEAK, "compareRows": COMPARE_ROWS, "compare": COMPARE}
 errors, count = [], [0]
 check(data, "topics", errors, count)
 check_absent(errors)
+check_techlist(errors)
 keys = [c["key"] for c in CONCEPTS]
 lvk = {l["k"] for l in LEVELS}
 seen = set()
