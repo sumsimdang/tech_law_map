@@ -25,7 +25,7 @@ head, body = src[:cut], src[cut:]
 head = head.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', "")
 
 TITLE = "기술보호법 인용 지도"
-DESC = ("산업기술보호법·부정경쟁방지법 등 기술보호 17개 법률의 조문 인용 관계, "
+DESC = ("산업기술보호법·부정경쟁방지법 등 기술보호 17개 법률과 시행령의 조문 인용 관계, "
         "유출의 정의와 형량, 기술 개념의 포함관계를 원문과 함께 봅니다. 매주 최신 법령으로 갱신.")
 ICON = ("data:image/svg+xml,"
         "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E"

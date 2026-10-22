@@ -1,4 +1,4 @@
-"""각 법률의 '오늘 시행 중인 판본'을 git 이력에서 찾아, 현재 파일(최신 공포본)과 조문별로 비교한다.
+"""각 법률과 시행령의 '오늘 시행 중인 판본'을 git 이력에서 찾아, 현재 파일(최신 공포본)과 조문별로 비교한다.
 
 출력: versions.json
   {law_key: {"inforce": {"commit", "promulgated", "effective"} | null,
@@ -19,16 +19,21 @@ src = (Path(__file__).parent / "parse.py").read_text(encoding="utf-8")
 src = src.replace("SRC = Path(sys.argv[1])", "SRC = None").replace("OUT = Path(sys.argv[2])", "OUT = None")
 ns = {}
 exec(compile(src.split("if __name__")[0], "parse", "exec"), ns)
-split_articles, parse_meta, LAWS = ns["split_articles"], ns["parse_meta"], ns["LAWS"]
+split_articles, parse_meta, LAWS, DEC_SUFFIX = ns["split_articles"], ns["parse_meta"], ns["LAWS"], ns["DEC_SUFFIX"]
 
 
 def git(*args):
     return subprocess.run(["git", "-c", "core.quotepath=off", *args], cwd=REPO, capture_output=True, text=True, check=True).stdout
 
 
-result = {}
+DOCS = []
 for d, key, short, group in LAWS:
-    path = f"kr/{d}/법률.md"
+    DOCS.append((key, short, f"kr/{d}/법률.md"))
+    if (REPO / f"kr/{d}/시행령.md").exists():
+        DOCS.append((key + DEC_SUFFIX, short + " 시행령", f"kr/{d}/시행령.md"))
+
+result = {}
+for key, short, path in DOCS:
     head_text = (REPO / path).read_text(encoding="utf-8")
     head_meta = parse_meta(head_text)
     entry = {"inforce": None, "pending": None, "changed": {}}

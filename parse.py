@@ -1,7 +1,10 @@
 """기술보호 관련 법률의 조문 간 인용 관계를 추출한다.
 
-입력: legalize-kr 저장소의 kr/{법령명}/법률.md (국가법령정보센터 원문)
-출력: graph.json (법률, 조문, 인용 엣지, 외부 법령)
+입력: legalize-kr 저장소의 kr/{법령명}/법률.md, 시행령.md (국가법령정보센터 원문)
+출력: graph.json (법률, 시행령, 조문, 인용 엣지, 외부 법령)
+
+시행령은 법률 키에 "_d"를 붙인 키(예: itp_d)로 다룬다. 시행령 본문의 "법 제N조"는 모법 조문,
+"이 영"과 번호만 쓴 "제N조"는 같은 시행령 조문, 「X 시행령」·"같은 법 시행령"은 X의 시행령으로 푼다.
 """
 import json
 import re
@@ -32,6 +35,9 @@ LAWS = [
     ("방위사업법", "dap", "방위사업법", "security"),
     ("국가정보원법", "nis", "국가정보원법", "security"),
 ]
+
+DEC_SUFFIX = "_d"
+
 
 def circ(n: int) -> str:
     if 1 <= n <= 20:
@@ -135,7 +141,11 @@ def split_articles(text: str):
 TOKEN = re.compile(
     r"「(?P<law>[^」]{2,90})」"
     r"|(?P<same>같은\s?법)(?P<samedec>\s?시행령|\s?시행규칙)?(?!률)"
+    r"|(?P<samedeconly>같은\s?영)(?=\s?제\d)"
+    r"|(?P<sameother>같은\s?(?:조약|협약|협정|규칙|규정))(?=\s?제\d)"
     r"|(?P<this>이\s?법)(?=[\s에의을과이은도])"
+    r"|(?P<thisdec>이\s?영)(?=[\s에의을과이은도])"
+    r"|(?P<parent>(?<![가-힣」\w])법)(?=\s?제\d)"
     r"|(?P<art>제(?P<a>\d+)조(?:의(?P<b>\d+))?(?P<sub>(?:제\d+항)?(?:제\d+호)?(?:[가-힣]목)?))"
 )
 def is_connector(gap: str) -> bool:
@@ -145,6 +155,14 @@ def is_connector(gap: str) -> bool:
     g = re.sub(r"제\d+(?:항|호)|[가-힣]목", "", g)
     g = re.sub(r"까지의\s?각\s?규정|까지의\s?규정|의\s?규정|까지|부터|및|또는|ㆍ|·|,|이나|내지|각각|와|과", "", g)
     return g.strip() == ""
+
+
+ALIAS_GAP = re.compile(r'^\s*\(이하\s*"[^"]{1,30}"\s*(?:이?라|으로)\s*한다\)\s*$')
+
+
+def tight(gap) -> bool:
+    """「법률명」과 조문 번호 사이가 비었거나 약칭 정의만 끼어 있는지."""
+    return gap is not None and (gap.strip() == "" or bool(ALIAS_GAP.match(gap)))
 
 
 QUOTED = re.compile(r'"[^"\n]{0,300}"|“[^”\n]{0,300}”')
@@ -167,6 +185,7 @@ def para_of(text: str, pos: int) -> str | None:
 
 def main():
     laws = []
+    decrees = []
     name_to_key = {}
     articles = {}  # law key -> list of article dicts
     order = {}  # law key -> {art key: index}
@@ -191,6 +210,29 @@ def main():
                 "url": "https://www.law.go.kr/법령/" + d,
             }
         )
+        dec_path = SRC / d / "시행령.md"
+        if dec_path.exists():
+            draw = dec_path.read_text(encoding="utf-8")
+            dmeta = parse_meta(draw)
+            dkey = key + DEC_SUFFIX
+            darts = split_articles(draw)
+            articles[dkey] = darts
+            order[dkey] = {a["key"]: i for i, a in enumerate(darts)}
+            name_to_key[norm_name(dmeta["제목"])] = dkey
+            decrees.append(
+                {
+                    "key": dkey,
+                    "parent": key,
+                    "name": dmeta["제목"],
+                    "short": short + " 시행령",
+                    "group": group,
+                    "promulgated": dmeta.get("공포일자"),
+                    "effective": dmeta.get("시행일자"),
+                    "number": dmeta.get("공포번호"),
+                    "dept": dmeta.get("소관부처", []),
+                    "url": "https://www.law.go.kr/법령/" + d + "시행령",
+                }
+            )
 
     edges = []
     external = Counter()
@@ -208,7 +250,9 @@ def main():
             return law_key, a_key, False
         return ("ext:" + ext_name), a_key, True
 
-    for src_law in [l["key"] for l in laws]:
+    parent_of = {dd["key"]: dd["parent"] for dd in decrees}
+    for src_law in [l["key"] for l in laws] + [dd["key"] for dd in decrees]:
+        is_dec = src_law in parent_of
         for art in articles[src_law]:
             if art["deleted"]:
                 continue
@@ -224,10 +268,18 @@ def main():
                     kind = "same"
                 elif m.group("this"):
                     kind = "this"
+                elif m.group("thisdec"):
+                    kind = "thisdec"
+                elif m.group("parent"):
+                    kind = "parent"
+                elif m.group("samedeconly"):
+                    kind = "samedeconly"
+                elif m.group("sameother"):
+                    kind = "sameother"
                 gap = masked[prev["end"]:m.start()] if prev else None
 
                 # 직전 법률 단위 인용이 조문 없이 끝났다면 법률 전체 인용으로 기록
-                if prev and prev["kind"] in ("law", "same") and not (kind == "art" and gap.strip() == ""):
+                if prev and prev["kind"] in ("law", "same") and not (kind == "art" and tight(gap)):
                     ctx = prev["ctx"]
                     if ctx and ctx[0] in ("core", "ext"):
                         tl, ta, ok = resolve_target(ctx[1] if ctx[0] == "core" else None, ctx[1], None)
@@ -240,12 +292,12 @@ def main():
                     raw_name = m.group("law").strip()
                     nm = norm_name(raw_name)
                     dec = re.search(r"(시행령|시행규칙)$", nm)
-                    if dec:
+                    if nm in name_to_key:
+                        ctx = ("core", name_to_key[nm])
+                    elif dec:
                         parent = nm[: dec.start()]
                         ctx = ("decree", parent, dec.group(1), raw_name)
                         decree_refs[raw_name] += 1
-                    elif nm in name_to_key:
-                        ctx = ("core", name_to_key[nm])
                     else:
                         ctx = ("ext", nm)
                         external_display.setdefault(nm, raw_name)
@@ -254,13 +306,33 @@ def main():
                     continue
                 if kind == "same":
                     if m.group("samedec"):
-                        ctx = ("decree",) if last_law_ctx is None else ("decree", last_law_ctx[1], m.group("samedec").strip(), "")
+                        sd = m.group("samedec").strip()
+                        base = last_law_ctx[1] if last_law_ctx and last_law_ctx[0] == "core" else None
+                        if sd == "시행령" and base and (base + DEC_SUFFIX) in order:
+                            ctx = ("core", base + DEC_SUFFIX)
+                        else:
+                            ctx = ("decree",) if last_law_ctx is None else ("decree", last_law_ctx[1], sd, "")
                     else:
                         ctx = last_law_ctx
                     prev = dict(kind="same", start=m.start(), end=m.end(), ctx=ctx)
                     continue
                 if kind == "this":
+                    prev = dict(kind="this", start=m.start(), end=m.end(), ctx=("core", parent_of.get(src_law, src_law)))
+                    continue
+                if kind == "thisdec":
                     prev = dict(kind="this", start=m.start(), end=m.end(), ctx=("core", src_law))
+                    continue
+                if kind == "parent":
+                    # 시행령 본문의 "법 제N조" = 모법. 법률 본문에는 쓰이지 않는다.
+                    prev = dict(kind="this", start=m.start(), end=m.end(), ctx=("core", parent_of[src_law])) if is_dec else None
+                    continue
+                if kind == "sameother":
+                    ctx = last_law_ctx if last_law_ctx and last_law_ctx[0] == "ext" else ("skip",)
+                    prev = dict(kind="same", start=m.start(), end=m.end(), ctx=ctx)
+                    continue
+                if kind == "samedeconly":
+                    ctx = last_law_ctx if last_law_ctx and last_law_ctx[0] == "core" and last_law_ctx[1] in parent_of else None
+                    prev = dict(kind="same", start=m.start(), end=m.end(), ctx=ctx) if ctx else None
                     continue
 
                 # 조문 토큰
@@ -268,7 +340,7 @@ def main():
                 ctx = ("core", src_law)
                 rng_from = None
                 span_start = m.start()
-                if prev and prev["kind"] in ("law", "same", "this") and gap.strip() == "":
+                if prev and prev["kind"] in ("law", "same", "this") and tight(gap):
                     ctx = prev["ctx"] or ("core", src_law)
                     span_start = prev["start"]  # 「법률명」 제N조 전체를 한 덩어리로 표시
                 elif prev and prev["kind"] == "art" and is_connector(gap):
@@ -276,7 +348,7 @@ def main():
                     if gap.strip() == "부터" and masked[m.end():m.end() + 3].lstrip().startswith("까지"):
                         rng_from = prev["akey"]
 
-                if ctx[0] == "decree":
+                if ctx[0] in ("decree", "skip"):
                     decree_refs[(ctx[3] or ctx[1] + ctx[2]) if len(ctx) > 3 else "?"] += 0
                     prev = dict(kind="art", start=m.start(), end=m.end(), ctx=ctx, akey=a_key)
                     continue
@@ -347,6 +419,7 @@ def main():
 
     data = {
         "laws": laws,
+        "decrees": decrees,
         "articles": {
             k: [
                 {"k": a["key"], "t": a["title"], "c": a["chapter"], "s": a["section"], "x": a["text"], "d": 1 if a["deleted"] else 0}
@@ -361,15 +434,18 @@ def main():
 
     # 리포트
     n_art = sum(len(v) for v in articles.values())
-    cross = [e for e in edges_out if not e["tl"].startswith("ext:") and e["tl"] != e["s"]]
+    fam = lambda k: parent_of.get(k, k)
+    cross = [e for e in edges_out if not e["tl"].startswith("ext:") and fam(e["tl"]) != fam(e["s"])]
+    deleg = [e for e in edges_out if not e["tl"].startswith("ext:") and fam(e["tl"]) == fam(e["s"]) and e["tl"] != e["s"]]
     intra = [e for e in edges_out if e["tl"] == e["s"]]
+    print(f"decrees={len(decrees)} decree_articles={sum(len(articles[dd['key']]) for dd in decrees)} deleg={len(deleg)} cross_from_decree={sum(1 for e in cross if e['s'] in parent_of or e['tl'] in parent_of)}")
     ext_e = [e for e in edges_out if e["tl"].startswith("ext:")]
     print(f"laws={len(laws)} articles={n_art} edges={len(edges_out)} intra={len(intra)} cross={len(cross)} external_edges={len(ext_e)} external_laws={len(ext_list)}")
     print(f"unresolved={len(unresolved)}")
     for u in unresolved[:40]:
         print("  UNRESOLVED", u)
     print("decree refs:", decree_refs.most_common(10))
-    pair = Counter((e["s"], e["tl"]) for e in cross)
+    pair = Counter((fam(e["s"]), fam(e["tl"])) for e in cross)
     print("cross-law pairs:")
     for (a, b), c in pair.most_common():
         print(f"  {a} -> {b}: {c}")

@@ -64,15 +64,19 @@ try:
 
     graph = json.loads((OUT / "graph.json").read_text(encoding="utf-8"))
     vers = json.loads((OUT / "versions.json").read_text(encoding="utf-8"))
-    short = {l["key"]: l["short"] for l in graph["laws"]}
-    cross = [e for e in graph["edges"] if not e["tl"].startswith("ext:") and e["tl"] != e["s"]]
+    docs = graph["laws"] + graph.get("decrees", [])
+    short = {l["key"]: l["short"] for l in docs}
+    par = {d["key"]: d["parent"] for d in graph.get("decrees", [])}
+    fam = lambda k: par.get(k, k)
+    # 법률 간 인용: 시행령은 모법에 합쳐 센다(시행령 → 모법 위임 연결은 빼고)
+    cross = [e for e in graph["edges"] if not e["tl"].startswith("ext:") and fam(e["tl"]) != fam(e["s"])]
     pairs = {}
     for e in cross:
-        k = f'{e["s"]}>{e["tl"]}'
+        k = f'{fam(e["s"])}>{fam(e["tl"])}'
         pairs[k] = pairs.get(k, 0) + 1
     state = {
         "snapshot": snapshot,
-        "laws": {l["key"]: {"promulgated": l["promulgated"], "effective": l["effective"]} for l in graph["laws"]},
+        "laws": {l["key"]: {"promulgated": l["promulgated"], "effective": l["effective"]} for l in docs},
         "pending": sorted(k for k, v in vers.items() if v.get("pending")),
         "edges": len(graph["edges"]),
         "cross": len(cross),
@@ -88,13 +92,15 @@ try:
             o = prev["laws"].get(k)
             if o and (o["promulgated"], o["effective"]) != (v["promulgated"], v["effective"]):
                 changes.append(f"{short[k]} 새 판본: {o['promulgated']} 공포본 → {v['promulgated']} 공포본(시행 {v['effective']})")
+        for k in sorted(set(state["laws"]) - set(prev["laws"])):
+            changes.append(f"{short[k]}을 새로 넣었어요")
         for k in sorted(set(prev.get("pending", [])) - set(state["pending"])):
             if k in short:
                 changes.append(f"{short[k]} 개정이 시행돼 현행 문구가 됐어요")
         for k in sorted(set(state["pending"]) - set(prev.get("pending", []))):
             changes.append(f"{short[k]}에 시행 예정 개정이 새로 생겼어요")
         if prev["cross"] != state["cross"]:
-            changes.append(f"법률 간 인용 {prev['cross']}건 → {state['cross']}건")
+            changes.append(f"법률 간 인용(시행령 포함) {prev['cross']}건 → {state['cross']}건")
         moved = [k for k in set(prev["pairs"]) | set(pairs) if prev["pairs"].get(k, 0) != pairs.get(k, 0)]
         for k in sorted(moved)[:12]:
             a, b = k.split(">")

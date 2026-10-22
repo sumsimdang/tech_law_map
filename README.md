@@ -1,18 +1,19 @@
 # 기술보호법 인용 지도
 
-**공개 주소: https://vlf2230-eng.github.io/tech_law_map/**
+**공개 주소: https://sumsimdang.github.io/tech_law_map/**
 
 기술보호 관련 17개 법률(산업기술보호법, 국가첨단전략산업법, 방산기술보호법, 부정경쟁방지법, 중소기업기술보호법 등)에 대해 아래 내용을 원문 구절과 함께 보여 주는 페이지예요. 누구나 로그인 없이 휴대폰이나 PC 브라우저로 볼 수 있어요.
 
-- 조문 사이의 인용 관계 (법률 관계 지도, 조문 궤도, 인용 행렬)
+- 조문 사이의 인용 관계 (법률 관계 지도, 조문 인용망, 인용 행렬)
 - 법률마다 '유출'을 무엇으로 정의하고 형량이 얼마인지 비교
 - 국가핵심기술, 국가첨단전략기술, 영업비밀, 방산기술 같은 개념의 포함관계
+- 시행령: 법률 조문마다 그 조문을 구체화한 시행령 조문, 지정·판정·수출 심사 같은 시행령 절차와 처리 기한
 
 ## 매주 자동 갱신
 
 매주 월요일 오전 6시 무렵(한국 시간)에 GitHub Actions가 아래 순서로 페이지를 다시 만들어요.
 
-1. [legalize-kr](https://github.com/legalize-kr/legalize-kr) 저장소에서 최신 법령 원문을 받아요.
+1. [legalize-kr](https://github.com/legalize-kr/legalize-kr) 저장소에서 최신 법률·시행령 원문을 받아요.
 2. 조문 인용을 다시 뽑고, 오늘 시행 중인 판본과 시행 예정 개정을 가려내요.
 3. 개념·유출 비교에 쓴 근거 구절이 원문에 그대로 있는지 하나씩 대조해요.
 4. 대조를 통과하면 같은 주소에 새로 게시하고, 바뀐 내용을 `changelog.json`에 남겨요. 페이지의 '자료 안내'에서도 이 기록을 볼 수 있어요.
@@ -37,7 +38,7 @@ Actions 탭 → **주간 법령 점검** → **Run workflow**를 누르면 돼�
 | 파일 | 하는 일 |
 |---|---|
 | `run_update.py` | 주간 점검 전체 순서 |
-| `parse.py` | 조문 인용 추출 |
+| `parse.py` | 법률·시행령 조문과 인용 추출 |
 | `versions.py` | 시행 중 판본과 시행 예정 개정 구분 |
 | `topics.py` | 개념·유출 비교 데이터와 근거 구절 검증 |
 | `build.py`, `template.html` | 페이지 조립 |
@@ -48,7 +49,7 @@ Actions 탭 → **주간 법령 점검** → **Run workflow**를 누르면 돼�
 | `og.png` | 카카오톡 같은 메신저의 링크 미리보기 이미지 |
 | `.github/workflows/weekly.yml` | 주간 실행과 Pages 게시 |
 
-법률 간 인용표는 CSV로도 받을 수 있어요: https://vlf2230-eng.github.io/tech_law_map/cross_citations.csv
+법률 간 인용표는 CSV로도 받을 수 있어요: https://sumsimdang.github.io/tech_law_map/cross_citations.csv
 
 ## 주의
 
